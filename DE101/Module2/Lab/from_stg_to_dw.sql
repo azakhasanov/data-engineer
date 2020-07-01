@@ -77,24 +77,7 @@ truncate table dw.geo_dim;
 insert into dw.geo_dim 
 select 100+row_number() over(), country, city, state, postal_code from (select distinct country, city, state, postal_code from stg.orders ) a;
 --data quality check
-select distinct country, city, state, postal_code from dw.geo_dim
-where country is null or city is null or postal_code is null;
-
--- City Burlington, Vermont doesn't have postal code
-update dw.geo_dim
-set postal_code = '05401'
-where city = 'Burlington'  and postal_code is null;
-
---also update source file
-update stg.orders
-set postal_code = '05401'
-where city = 'Burlington'  and postal_code is null;
-
-
-select * from dw.geo_dim
-where city = 'Burlington'
-
-
+select * from dw.geo_dim;
 
 
 --PRODUCT
